@@ -1,0 +1,1838 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kapuçino Banka & Veletinden Pazar</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+:root{
+  --bg:#140c10;
+  --card:#24161c;
+  --card2:#321e27;
+  --accent:#d4915e;
+  --accent2:#f3b482;
+  --accent3:#b56a33;
+  --text:#f8ede3;
+  --text2:#bfa293;
+  --free:#9ca3af;
+  --pro:#38bdf8;
+  --plus:#c084fc;
+  --ultra:#fbbf24;
+  --ok:#22c55e;
+  --no:#ef4444;
+  --warn:#f59e0b;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--accent3);border-radius:10px}
+
+/* CLOUD STATUS PILL */
+.cloud-status{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  background:rgba(212,145,94,.12);
+  border:1px solid rgba(212,145,94,.25);
+  padding:5px 14px;
+  border-radius:20px;
+  font-size:.78rem;
+  font-weight:600;
+}
+.cloud-dot{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok)}
+.cloud-dot.syncing{background:var(--warn);box-shadow:0 0 8px var(--warn);animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* AUTH */
+.auth-page{display:flex;justify-content:center;align-items:center;min-height:100vh;background:radial-gradient(ellipse at top,#351b24,var(--bg));padding:20px}
+.auth-box{background:var(--card);border:1px solid rgba(212,145,94,.25);border-radius:24px;padding:36px;width:100%;max-width:440px;box-shadow:0 25px 70px rgba(0,0,0,.6)}
+.logo{text-align:center;margin-bottom:24px}
+.logo h1{font-size:2.5rem;font-weight:900;background:linear-gradient(135deg,var(--accent),var(--accent2),#ffd9b3);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:2px}
+.logo p{color:var(--text2);font-size:.85rem;margin-top:4px}
+.demo-accounts{background:rgba(212,145,94,.08);border:1px dashed rgba(212,145,94,.3);border-radius:14px;padding:12px;margin-bottom:20px;font-size:.78rem;color:var(--text2)}
+.demo-accounts strong{color:var(--accent2)}
+.tabs{display:flex;gap:8px;margin-bottom:20px}
+.tab{flex:1;padding:11px;border:none;border-radius:12px;background:0 0;color:var(--text2);font-family:inherit;font-size:.95rem;font-weight:600;cursor:pointer;transition:.3s}
+.tab.on{background:linear-gradient(135deg,var(--accent3),var(--accent));color:#fff;box-shadow:0 4px 15px rgba(212,145,94,.3)}
+.fg{margin-bottom:16px}
+.fg label{display:block;font-size:.85rem;color:var(--text2);margin-bottom:6px;font-weight:500}
+.fg input,.fg select,.fg textarea{width:100%;padding:12px 16px;border:1px solid rgba(212,145,94,.2);border-radius:12px;background:#180f14;color:var(--text);font-family:inherit;font-size:.95rem;outline:none;transition:.3s}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--accent2);box-shadow:0 0 10px rgba(212,145,94,.2)}
+.btn{padding:14px;border:none;border-radius:14px;font-family:inherit;font-size:1rem;font-weight:700;cursor:pointer;transition:.3s;width:100%;margin-top:8px}
+.btn:hover{transform:translateY(-2px);filter:brightness(1.08)}
+.bp{background:linear-gradient(135deg,var(--accent3),var(--accent));color:#fff}
+.bs{background:linear-gradient(135deg,#16a34a,var(--ok));color:#fff}
+.bd{background:linear-gradient(135deg,#dc2626,var(--no));color:#fff}
+.bw{background:linear-gradient(135deg,#d97706,var(--warn));color:#fff}
+.bo{background:0 0;border:1px solid var(--accent);color:var(--accent)}
+.sm{padding:8px 18px;width:auto;font-size:.85rem;border-radius:10px;margin-top:0}
+
+/* PLAN SELECT */
+.plan-page{display:none;justify-content:center;align-items:center;min-height:100vh;background:radial-gradient(ellipse at top,#351b24,var(--bg));padding:20px}
+.plan-wrap{max-width:1040px;width:100%}
+.plan-wrap h2{text-align:center;font-size:2.2rem;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px}
+.plan-wrap>p{text-align:center;color:var(--text2);margin-bottom:36px;font-size:.95rem}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px}
+.pcard{background:var(--card);border:2px solid rgba(255,255,255,.05);border-radius:20px;padding:28px 22px;text-align:center;cursor:pointer;position:relative;overflow:hidden;transition:.3s}
+.pcard:hover{transform:translateY(-6px);box-shadow:0 18px 45px rgba(0,0,0,.5)}
+.pcard::before{content:'';position:absolute;top:0;left:0;right:0;height:5px}
+.pcard.free::before{background:var(--free)}.pcard.pro::before{background:var(--pro)}.pcard.plus::before{background:var(--plus)}.pcard.ultra::before{background:var(--ultra)}
+.pcard.ultra:hover{border-color:rgba(251,191,36,.4)}.pcard.plus:hover{border-color:rgba(192,132,252,.4)}.pcard.pro:hover{border-color:rgba(56,189,248,.4)}
+.pn{font-size:1.4rem;font-weight:800;margin-bottom:8px}
+.pcard.free .pn{color:var(--free)}.pcard.pro .pn{color:var(--pro)}.pcard.plus .pn{color:var(--plus)}.pcard.ultra .pn{color:var(--ultra)}
+.pp{font-size:1.8rem;font-weight:900;margin:10px 0}.pp small{font-size:.7rem;font-weight:400;color:var(--text2)}
+.pf{list-style:none;margin:16px 0;text-align:left}.pf li{padding:6px 0;font-size:.85rem;color:var(--text2)}.pf li::before{content:'✦ ';color:var(--accent)}
+.pb0{display:inline-block;padding:4px 12px;border-radius:20px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px}
+
+/* APP SHELL */
+.app-page{display:none}
+.side{position:fixed;top:0;left:0;width:260px;height:100vh;background:var(--card);border-right:1px solid rgba(212,145,94,.12);z-index:100;display:flex;flex-direction:column;transition:transform .3s}
+.side-logo{padding:24px 20px;border-bottom:1px solid rgba(212,145,94,.1)}
+.side-logo h2{font-size:1.45rem;font-weight:900;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.side-user{padding:20px;border-bottom:1px solid rgba(212,145,94,.1)}
+.uinfo{display:flex;align-items:center;gap:12px}
+.uav{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.15rem;color:#fff}
+.uav.free{background:var(--free)}.uav.pro{background:var(--pro)}.uav.plus{background:var(--plus)}.uav.ultra{background:linear-gradient(135deg,#f59e0b,#fbbf24)}
+.uname{font-weight:600;font-size:.95rem}
+.urole{font-size:.7rem;font-weight:700;padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:1px;display:inline-block;margin-top:4px}
+.rf{background:rgba(156,163,175,.2);color:var(--free)}.rp{background:rgba(56,189,248,.18);color:var(--pro)}.rpl{background:rgba(192,132,252,.18);color:var(--plus)}.ru{background:rgba(251,191,36,.2);color:var(--ultra)}.ra{background:rgba(239,68,68,.2);color:var(--no)}
+.snav{flex:1;padding:12px 0;overflow-y:auto}
+.ni{display:flex;align-items:center;gap:12px;padding:12px 20px;color:var(--text2);font-weight:500;font-size:.9rem;cursor:pointer;transition:.2s;border-left:3px solid transparent}
+.ni:hover{background:rgba(212,145,94,.06);color:var(--text)}
+.ni.on{background:rgba(212,145,94,.1);color:var(--accent2);border-left-color:var(--accent)}
+.ni .ic{font-size:1.2rem;width:28px;text-align:center}
+.ndiv{height:1px;background:rgba(212,145,94,.08);margin:8px 20px}
+.sfooter{padding:16px 20px;border-top:1px solid rgba(212,145,94,.1)}
+.main{margin-left:260px;min-height:100vh;padding-bottom:50px}
+.ph{padding:22px 32px;border-bottom:1px solid rgba(212,145,94,.08);background:rgba(36,22,28,.85);backdrop-filter:blur(10px);position:sticky;top:0;z-index:50;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.ph h1{font-size:1.5rem;font-weight:700}.ph p{color:var(--text2);font-size:.85rem;margin-top:4px}
+.pb2{padding:32px}
+
+/* STATS */
+.sgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px;margin-bottom:32px}
+.sc{background:var(--card);border:1px solid rgba(212,145,94,.12);border-radius:18px;padding:24px}
+.sc .si{font-size:2rem;margin-bottom:12px}.sc .sv{font-size:1.8rem;font-weight:800}.sc .sl{font-size:.82rem;color:var(--text2);margin-top:4px}
+
+/* REALISTIC BANK CARD */
+.bank-showcase{display:grid;grid-template-columns:minmax(320px,460px) 1fr;gap:24px;margin-bottom:28px}
+@media(max-width:980px){.bank-showcase{grid-template-columns:1fr}}
+
+.credit-card{
+  height:240px;
+  border-radius:24px;
+  padding:26px 28px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 20px 45px rgba(0,0,0,.6);
+  border:1px solid rgba(255,255,255,.15);
+  transition:transform .3s;
+}
+.credit-card:hover{transform:translateY(-4px)}
+.credit-card.ultra{background:linear-gradient(135deg,#92400e,#d97706,#f59e0b,#fbbf24);color:#1c1004}
+.credit-card.plus{background:linear-gradient(135deg,#4c1d95,#7c3aed,#a855f7,#c084fc);color:#fff}
+.credit-card.pro{background:linear-gradient(135deg,#0369a1,#0284c7,#38bdf8,#7dd3fc);color:#fff}
+.credit-card.free{background:linear-gradient(135deg,#262626,#404040,#525252);color:#f3f4f6}
+
+.card-top{display:flex;justify-content:space-between;align-items:center}
+.card-bank-name{font-weight:900;letter-spacing:2px;font-size:1.15rem}
+.card-tier{font-size:.75rem;font-weight:800;padding:2px 10px;border-radius:12px;background:rgba(255,255,255,.25);backdrop-filter:blur(5px);text-transform:uppercase}
+.card-chip{width:46px;height:34px;background:linear-gradient(135deg,#e2e8f0,#cbd5e1);border-radius:6px;border:1px solid rgba(0,0,0,.2);display:flex;align-items:center;justify-content:center}
+.card-chip::after{content:'';width:32px;height:20px;border:1px solid rgba(0,0,0,.3);border-radius:3px}
+.card-number{font-family:'Courier New',monospace;font-size:1.25rem;letter-spacing:3px;font-weight:700}
+.card-bottom{display:flex;justify-content:space-between;align-items:flex-end}
+.card-holder{font-size:.75rem;text-transform:uppercase}
+.card-holder-name{font-size:.95rem;font-weight:700;letter-spacing:1px}
+.card-exp{font-size:.75rem;text-align:right}
+
+.bcard{background:linear-gradient(135deg,#2e1b23,#3d232f,#2a1820);border:1px solid rgba(212,145,94,.2);border-radius:24px;padding:30px;display:flex;flex-direction:column;justify-content:center}
+.bbl{font-size:.85rem;color:var(--text2)}.bb{font-size:3rem;font-weight:900;margin:8px 0;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.bbc{font-size:1.2rem}
+.bacts{display:flex;gap:12px;margin-top:16px;flex-wrap:wrap}
+
+/* TRANSACTIONS */
+.tsec,.hsec{background:var(--card);border:1px solid rgba(212,145,94,.12);border-radius:18px;padding:24px;margin-bottom:24px}
+.stitle{font-size:1.1rem;font-weight:700;margin-bottom:20px;display:flex;align-items:center;gap:8px}
+.tlist{list-style:none}
+.titem{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid rgba(212,145,94,.06)}
+.titem:last-child{border-bottom:none}
+.txi{display:flex;align-items:center;gap:12px}
+.txic{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+.txic.inc{background:rgba(34,197,94,.15)}.txic.out{background:rgba(239,68,68,.15)}.txic.sal{background:rgba(251,191,36,.15)}
+.txd{font-size:.92rem;font-weight:500}.txdt{font-size:.75rem;color:var(--text2)}
+.txa{font-weight:700;font-size:1rem}.txa.pos{color:var(--ok)}.txa.neg{color:var(--no)}
+
+/* VELETİNDEN (MARKET) */
+.mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:12px}
+.lgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:22px}
+.lcard{background:var(--card);border:1px solid rgba(212,145,94,.15);border-radius:18px;overflow:hidden;transition:.3s;position:relative;display:flex;flex-direction:column}
+.lcard:hover{transform:translateY(-5px);box-shadow:0 15px 35px rgba(0,0,0,.4)}
+.limg{width:100%;height:190px;object-fit:cover;background:#180f14;display:flex;align-items:center;justify-content:center;color:var(--text2);font-size:3.5rem}
+.limg img{width:100%;height:190px;object-fit:cover}
+.lbody{padding:18px;flex:1;display:flex;flex-direction:column;justify-content:space-between}
+.lt{font-size:1.1rem;font-weight:700;margin-bottom:6px}
+.ld{font-size:.82rem;color:var(--text2);margin-bottom:12px;line-height:1.5}
+.defo-badge{display:inline-block;padding:3px 10px;border-radius:8px;font-size:.75rem;font-weight:600;margin-bottom:12px;width:fit-content}
+.defo-none{background:rgba(34,197,94,.15);color:var(--ok);border:1px solid rgba(34,197,94,.3)}
+.defo-slight{background:rgba(245,158,11,.15);color:var(--warn);border:1px solid rgba(245,158,11,.3)}
+.defo-heavy{background:rgba(239,68,68,.15);color:var(--no);border:1px solid rgba(239,68,68,.3)}
+.lf{display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(212,145,94,.08);padding-top:12px;margin-top:auto}
+.lpr{font-size:1.25rem;font-weight:800;color:var(--accent)}
+.lpr small{font-size:.72rem;color:var(--text2);font-weight:400;display:block}
+.ls{font-size:.78rem;color:var(--text2)}
+
+/* UPLOAD DROPZONE */
+.upload-dropzone{
+  border:2px dashed rgba(212,145,94,.35);
+  border-radius:14px;
+  padding:20px;
+  text-align:center;
+  background:#180f14;
+  cursor:pointer;
+  transition:.3s;
+}
+.upload-dropzone:hover{border-color:var(--accent);background:rgba(212,145,94,.04)}
+
+/* MODAL */
+.mo{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.75);backdrop-filter:blur(4px);z-index:1000;justify-content:center;align-items:center;padding:20px}
+.mo.show{display:flex}
+.modal{background:var(--card);border:1px solid rgba(212,145,94,.25);border-radius:22px;padding:32px;width:100%;max-width:520px;max-height:88vh;overflow-y:auto;animation:mIn .25s ease}
+@keyframes mIn{from{opacity:0;transform:scale(.95) translateY(15px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.modal h3{font-size:1.35rem;margin-bottom:20px;display:flex;align-items:center;gap:10px}
+
+/* ADMIN PANEL */
+.atabs{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}
+.atab{padding:10px 18px;border:1px solid rgba(212,145,94,.15);border-radius:12px;background:0 0;color:var(--text2);font-family:inherit;font-size:.85rem;font-weight:600;cursor:pointer;transition:.2s}
+.atab.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.at{width:100%;border-collapse:collapse;margin-top:16px}
+.at th,.at td{padding:12px 14px;text-align:left;border-bottom:1px solid rgba(212,145,94,.08);font-size:.85rem}
+.at th{color:var(--text2);font-weight:600;font-size:.75rem;text-transform:uppercase;letter-spacing:1px}
+.at tr:hover{background:rgba(212,145,94,.03)}
+
+/* NOTIFICATION */
+.notif{position:fixed;top:20px;right:20px;padding:16px 24px;border-radius:14px;font-weight:600;font-size:.9rem;z-index:2000;animation:sIn .3s ease;max-width:360px;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+@keyframes sIn{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
+.notif.ok{background:var(--ok);color:#fff}.notif.err{background:var(--no);color:#fff}.notif.inf{background:var(--accent);color:#fff}
+
+/* CARD REQUEST CARDS */
+.card-req{background:var(--card);border:1px solid rgba(212,145,94,.12);border-radius:16px;padding:22px;margin-bottom:16px}
+.card-req-status{display:inline-block;padding:4px 12px;border-radius:20px;font-size:.72rem;font-weight:700;text-transform:uppercase}
+.crs-pending{background:rgba(245,158,11,.15);color:var(--warn)}
+.crs-done{background:rgba(34,197,94,.15);color:var(--ok)}
+.card-req-msg{margin-top:12px;padding:14px;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);border-radius:12px;font-size:.88rem;color:#86efac}
+
+.ham{display:none;position:fixed;top:16px;left:16px;z-index:200;background:var(--card);border:1px solid rgba(212,145,94,.25);border-radius:10px;padding:10px;cursor:pointer;color:var(--text);font-size:1.3rem}
+.badge{background:var(--no);color:#fff;font-size:.65rem;padding:2px 7px;border-radius:10px;margin-left:8px}
+.empty{text-align:center;padding:50px 20px;color:var(--text2)}.empty .ei{font-size:3rem;margin-bottom:14px}
+.iline{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap}.iline .fg{flex:1;min-width:150px;margin-bottom:0}
+.pusec{background:var(--card);border:1px solid rgba(212,145,94,.12);border-radius:18px;padding:24px;margin-bottom:24px}
+
+@media(max-width:768px){
+  .ham{display:block}
+  .side{transform:translateX(-100%)}
+  .side.open{transform:translateX(0)}
+  .main{margin-left:0}
+  .pgrid{grid-template-columns:1fr 1fr}
+  .bb{font-size:2.2rem}
+}
+@media(max-width:480px){
+  .pgrid{grid-template-columns:1fr}
+  .credit-card{height:220px;padding:20px}
+  .card-number{font-size:1.05rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ==================== BULUT SENKRONİZASYON & VERİ TABANI ==================== -->
+<script>
+// Canlı Bulut Veritabanı Yapılandırması (Serverless, Firebase KULLANMAZ, GitHub Pages ile tam uyumlu)
+// Herhangi bir cihazda hesap açılınca veya işlem yapılınca otomatik olarak diğer tüm cihazlara anında yansır!
+const CLOUD_SYNC = {
+  // kvdb.io açık ve ücretsiz REST API uç noktası
+  endpoint: 'https://kvdb.io/KApUc1N0_bAnK_v1/kapucino_db',
+  intervalMs: 3500 // Her 3.5 saniyede bir diğer cihazlardan gelen değişiklikleri tara
+};
+
+const DEFAULT_DB = {
+  users: [
+    { username: "admin", password: "Yc544936.", plan: "ultra", balance: 50000, lastSalary: 1729612800000, createdAt: 1729612800000, iban: "TR56 0009 9012 3456 7890 01", cardNo: "4532 9988 7766 0001" },
+    { username: "yusuf", password: "123", plan: "ultra", balance: 3500, lastSalary: 1729612800000, createdAt: 1729612800000, iban: "TR56 0009 9012 3456 7890 02", cardNo: "4532 7788 1234 5678" },
+    { username: "mert", password: "123", plan: "plus", balance: 850, lastSalary: 1729612800000, createdAt: 1729612800000, iban: "TR56 0009 9012 3456 7890 03", cardNo: "4532 3344 8899 1122" },
+    { username: "efe", password: "123", plan: "pro", balance: 400, lastSalary: 1729612800000, createdAt: 1729612800000, iban: "TR56 0009 9012 3456 7890 04", cardNo: "4532 5566 2211 9988" },
+    { username: "ali_free", password: "123", plan: "free", balance: 20, lastSalary: 1729612800000, createdAt: 1729612800000, iban: "TR56 0009 9012 3456 7890 05", cardNo: "4532 1122 3344 5566" }
+  ],
+  requests: [
+    { id: 101, username: "efe", requestedPlan: "plus", currentPlan: "pro", status: "pending", type: "upgrade", timestamp: Date.now() - 3600000, seen: false }
+  ],
+  cardRequests: [
+    { id: 201, username: "yusuf", description: "Siyah mat zemin, kenarları altın işlemeli olsun. Ortasında Kapuçino logosu kabartmalı olsun.", status: "done", adminMessage: "Özel altın kartınız üretildi ve kuryeye verildi!", timestamp: Date.now() - 7200000 }
+  ],
+  listings: [
+    { id: 1, seller: "yusuf", title: "iPhone 15 Pro Max 256GB", description: "Kozmetik kusursuz, pil %100, garantili cihaz.", priceVL: 4500, priceTL: 45, defo: "none", defoText: "Sıfır Ayarında / Defosuz", image: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=600&auto=format&fit=crop", pinned: true, deleted: false, createdAt: Date.now() - 86400000 },
+    { id: 2, seller: "mert", title: "Özel Kapuçino Fincan Seti", description: "El yapımı özel porselen fincan ve tabağı.", priceVL: 350, priceTL: 3.5, defo: "slight", defoText: "Kutusu Açılmış / Kılcal Çizik", image: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=600&auto=format&fit=crop", pinned: false, deleted: false, createdAt: Date.now() - 43200000 }
+  ],
+  transactions: [
+    { from: "KAPUÇINO", to: "admin", amount: 1000, type: "salary", timestamp: Date.now() - 20000000 },
+    { from: "KAPUÇINO", to: "yusuf", amount: 1000, type: "salary", timestamp: Date.now() - 15000000 }
+  ],
+  settings: { salaryMultiplier: 1 },
+  lastUpdated: Date.now()
+};
+
+let db = JSON.parse(JSON.stringify(DEFAULT_DB));
+let isSyncing = false;
+
+// 1. Yerel Önbellekten Yükle (Sayfa açılır açılmaz anında çalışsın diye)
+function loadLocal() {
+  try {
+    let localData = JSON.parse(localStorage.getItem('kapucino_db'));
+    if (localData && localData.users && localData.users.length) {
+      db = localData;
+    }
+  } catch (e) {}
+}
+loadLocal();
+
+// 2. Canlı Buluttan Veri Çek & Eşitle
+async function fetchCloudDB() {
+  try {
+    setCloudStatus('syncing', 'Bulut eşitleniyor...');
+    let res = await fetch(CLOUD_SYNC.endpoint, { method: 'GET', cache: 'no-cache' });
+    if (res.ok) {
+      let cloudData = await res.json();
+      if (cloudData && cloudData.users && cloudData.users.length) {
+        // Buluttaki veri daha güncelse veya yerelde olmayan kullanıcılar varsa birleştir
+        if (!db.lastUpdated || (cloudData.lastUpdated && cloudData.lastUpdated > db.lastUpdated) || cloudData.users.length !== db.users.length) {
+          db = cloudData;
+          localStorage.setItem('kapucino_db', JSON.stringify(db));
+          meR();
+          if (document.getElementById('appPage').style.display === 'block') {
+            refreshCurrentPage();
+          }
+        }
+      }
+      setCloudStatus('ok', 'Bulut Canlı (Eşitlendi)');
+    } else if (res.status === 404) {
+      // Bulutta henüz veri yoksa ilk veriyi gönder
+      await pushCloudDB();
+    }
+  } catch (err) {
+    setCloudStatus('ok', 'Yerel Aktif (Buluta Bağlanıyor)');
+  }
+}
+
+// 3. Değişiklikleri Anında Buluta Gönder
+async function pushCloudDB() {
+  db.lastUpdated = Date.now();
+  localStorage.setItem('kapucino_db', JSON.stringify(db));
+  try {
+    setCloudStatus('syncing', 'Buluta kaydediliyor...');
+    await fetch(CLOUD_SYNC.endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(db)
+    });
+    setCloudStatus('ok', 'Bulut Canlı (Kaydedildi)');
+  } catch (err) {
+    setCloudStatus('ok', 'Yerel Kaydedildi (Bulut Beklemede)');
+  }
+}
+
+function setCloudStatus(state, text) {
+  let dot = document.getElementById('cloudDot');
+  let txt = document.getElementById('cloudText');
+  if (dot && txt) {
+    dot.className = 'cloud-dot ' + (state === 'syncing' ? 'syncing' : '');
+    txt.textContent = text;
+  }
+}
+
+// Düzenli Arka Plan Canlı Senkronizasyon (Diğer telefonlardaki hareketleri otomatik çeker)
+setInterval(() => {
+  fetchCloudDB();
+}, CLOUD_SYNC.intervalMs);
+
+// Sayfa ilk yüklendiğinde hemen buluttan çek
+window.addEventListener('load', () => {
+  fetchCloudDB();
+});
+</script>
+
+<!-- ==================== AUTH SAYFASI ==================== -->
+<div class="auth-page" id="authPage">
+  <div class="auth-box">
+    <div class="logo">
+      <h1>☕ KAPUÇINO</h1>
+      <p>Yeni Nesil Dijital Banka & Veletinden Pazarı</p>
+    </div>
+
+    <div style="text-align:center;margin-bottom:16px;">
+      <div class="cloud-status">
+        <span class="cloud-dot" id="cloudDot"></span>
+        <span id="cloudText">Bulut Canlı (Eşitlendi)</span>
+      </div>
+    </div>
+
+    <div class="demo-accounts">
+      <strong>✨ Hızlı Giriş İçin Hazır Hesaplar:</strong><br>
+      • <strong>admin</strong> (Şifre: <code>Yc544936.</code> - Ultra & Admin)<br>
+      • <strong>yusuf</strong> (Şifre: <code>123</code> - Ultra Üye)<br>
+      • <strong>mert</strong> (Şifre: <code>123</code> - Plus Üye)<br>
+      • <strong>ali_free</strong> (Şifre: <code>123</code> - Free Üye)
+    </div>
+
+    <div class="tabs">
+      <button class="tab on" onclick="authTab('login')">Giriş Yap</button>
+      <button class="tab" onclick="authTab('register')">Kayıt Ol</button>
+    </div>
+
+    <div id="loginForm">
+      <div class="fg"><label>Kullanıcı Adı</label><input id="lUser" placeholder="Kullanıcı adınız"></div>
+      <div class="fg"><label>Şifre</label><input type="password" id="lPass" placeholder="Şifreniz"></div>
+      <button class="btn bp" onclick="login()">Giriş Yap</button>
+    </div>
+
+    <div id="registerForm" style="display:none">
+      <div class="fg"><label>Kullanıcı Adı</label><input id="rUser" placeholder="Kullanıcı adı belirleyin"></div>
+      <div class="fg"><label>Şifre</label><input type="password" id="rPass" placeholder="Şifre belirleyin"></div>
+      <div class="fg"><label>Şifre Tekrar</label><input type="password" id="rPass2" placeholder="Şifrenizi tekrar girin"></div>
+      <button class="btn bp" onclick="register()">Kayıt Ol ve Plan Seç</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== İLK KAYIT PLAN SEÇİMİ ==================== -->
+<div class="plan-page" id="planPage">
+  <div class="plan-wrap">
+    <h2>☕ Kapuçino Dünyasına Hoş Geldin!</h2>
+    <p>Aramıza katılmak için sana en uygun planı seç. Admin onayından sonra ayrıcalıkların tanımlanır.</p>
+    <div class="pgrid">
+      <div class="pcard free" onclick="selPlan('free')">
+        <div class="pn">FREE</div>
+        <div class="pp">Ücretsiz</div>
+        <ul class="pf">
+          <li>Haftalık 10 VL maaş</li>
+          <li>Kapuçino Banka Hesabı & Kart</li>
+          <li>Veletinden'den alışveriş yapabilme</li>
+          <li>İlan koyma kapalı</li>
+        </ul>
+        <span class="pb0" style="background:rgba(156,163,175,.2);color:var(--free)">Ücretsiz Başlangıç</span>
+      </div>
+
+      <div class="pcard pro" onclick="selPlan('pro')">
+        <div class="pn">PRO</div>
+        <div class="pp">0.25 TL<small>/ay</small></div>
+        <div style="color:var(--text2);font-size:.8rem;margin-bottom:8px">veya 2 TL/yıllık</div>
+        <ul class="pf">
+          <li>Haftalık 100 VL maaş</li>
+          <li>Veletinden'de sınırsız ilan açma</li>
+          <li>Renkli Mavi Pro Rozeti 🔵</li>
+          <li>Özel Mavi Kapuçino Kart</li>
+        </ul>
+        <span class="pb0" style="background:rgba(56,189,248,.2);color:var(--pro)">Avantajlı</span>
+      </div>
+
+      <div class="pcard plus" onclick="selPlan('plus')">
+        <div class="pn">PLUS</div>
+        <div class="pp">0.50 TL<small>/ay</small></div>
+        <div style="color:var(--text2);font-size:.8rem;margin-bottom:8px">veya 5 TL/yıllık</div>
+        <ul class="pf">
+          <li>Haftalık 200 VL maaş</li>
+          <li>Veletinden'de öne çıkan ilanlar</li>
+          <li>Mor Parlak Plus Rozeti 🟣</li>
+          <li>Özel Mor Hologram Kart</li>
+        </ul>
+        <span class="pb0" style="background:rgba(192,132,252,.2);color:var(--plus)">Popüler</span>
+      </div>
+
+      <div class="pcard ultra" onclick="selPlan('ultra')">
+        <div class="pn">ULTRA</div>
+        <div class="pp">1 TL<small>/ay</small></div>
+        <div style="color:var(--text2);font-size:.8rem;margin-bottom:8px">veya 10 TL/yıllık</div>
+        <ul class="pf">
+          <li>Haftalık 1000 VL dev maaş!</li>
+          <li>Sabitlenen öncelikli ilanlar</li>
+          <li>Altın Ultra VIP Rozeti ⭐</li>
+          <li>24 Ayar Altın Görünümlü Kart</li>
+        </ul>
+        <span class="pb0" style="background:rgba(251,191,36,.2);color:var(--ultra)">VIP Seviye</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== ANA UYGULAMA ==================== -->
+<div class="app-page" id="appPage">
+  <button class="ham" onclick="togSide()">☰</button>
+
+  <!-- Sidebar -->
+  <div class="side" id="sidebar">
+    <div class="side-logo"><h2>☕ KAPUÇINO</h2></div>
+    <div class="side-user">
+      <div class="uinfo">
+        <div class="uav" id="sAv">K</div>
+        <div>
+          <div class="uname" id="sNm">-</div>
+          <span class="urole" id="sRl">FREE</span>
+        </div>
+      </div>
+    </div>
+
+    <nav class="snav">
+      <div class="ni on" onclick="nav('dash')" data-p="dash"><span class="ic">🏠</span>Ana Sayfa</div>
+      <div class="ni" onclick="nav('bank')" data-p="bank"><span class="ic">🏦</span>Banka Hesabım</div>
+      <div class="ni" onclick="nav('market')" data-p="market"><span class="ic">🛒</span>Veletinden Pazar</div>
+      <div class="ni" onclick="nav('card')" data-p="card"><span class="ic">💳</span>Kart İsteği</div>
+      <div class="ndiv"></div>
+      <div class="ni" onclick="nav('plans')" data-p="plans"><span class="ic">💎</span>Üyelik Yükselt</div>
+      <div class="ni" onclick="nav('profile')" data-p="profile"><span class="ic">👤</span>Profil</div>
+      <div class="ndiv"></div>
+      <div class="ni" onclick="openAdmLogin()" id="admNav">
+        <span class="ic">⚙️</span>Admin Panel
+        <span class="badge" id="admBadge" style="display:none">0</span>
+      </div>
+    </nav>
+
+    <div class="sfooter">
+      <button class="btn bo sm" onclick="logout()" style="width:100%">🚪 Çıkış Yap</button>
+    </div>
+  </div>
+
+  <!-- Main Pages -->
+  <div class="main">
+    <!-- DASHBOARD -->
+    <div class="cp" id="p-dash">
+      <div class="ph">
+        <div>
+          <h1>🏠 Ana Sayfa</h1>
+          <p>Kapuçino dijital bankacılık ve ilan pazarına hoş geldin!</p>
+        </div>
+        <div class="cloud-status">
+          <span class="cloud-dot"></span>
+          <span>Canlı Ağ Bağlantısı Aktif</span>
+        </div>
+      </div>
+      <div class="pb2">
+        <div class="sgrid">
+          <div class="sc"><div class="si">💰</div><div class="sv" id="dBal">0 VL</div><div class="sl">Kullanılabilir Bakiye</div></div>
+          <div class="sc"><div class="si">📊</div><div class="sv" id="dPlan">FREE</div><div class="sl">Üyelik Statüsü</div></div>
+          <div class="sc"><div class="si">💸</div><div class="sv" id="dSal">10 VL</div><div class="sl">Haftalık Düzenli Maaş</div></div>
+          <div class="sc"><div class="si">📅</div><div class="sv" id="dNext">-</div><div class="sl">Sonraki Maaş Vakti</div></div>
+        </div>
+
+        <div class="tsec">
+          <div class="stitle">📢 Son Hesap Hareketleri</div>
+          <ul class="tlist" id="dTx">
+            <li class="empty"><div class="ei">📭</div><p>Henüz işlem kaydı yok</p></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- BANKA SAYFASI -->
+    <div class="cp" id="p-bank" style="display:none">
+      <div class="ph">
+        <div>
+          <h1>🏦 Kapuçino Bankası</h1>
+          <p>Kartınız, IBAN'ınız ve finansal işlemleriniz</p>
+        </div>
+      </div>
+      <div class="pb2">
+        <!-- Kart ve Bakiye Vitrini -->
+        <div class="bank-showcase">
+          <!-- Gerçekçi Dijital Kart -->
+          <div class="credit-card" id="myCreditCard">
+            <div class="card-top">
+              <div class="card-bank-name">☕ KAPUÇINO</div>
+              <div class="card-tier" id="cardTierName">ULTRA VIP</div>
+            </div>
+            <div class="card-chip"></div>
+            <div class="card-number" id="cardNumberText">4532 •••• •••• 8892</div>
+            <div class="card-bottom">
+              <div>
+                <div class="card-holder">KART SAHİBİ</div>
+                <div class="card-holder-name" id="cardHolderName">YUSUF</div>
+              </div>
+              <div>
+                <div class="card-exp">SKT</div>
+                <div style="font-weight:700;font-size:.9rem">10/30</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hesap Özeti -->
+          <div class="bcard">
+            <div class="bbl">Hesap Bakiyesi</div>
+            <div class="bb" id="bBal">0 <span class="bbc">VL</span></div>
+            <div style="color:var(--text2);font-size:.82rem;margin-bottom:12px;" id="bIbanText">IBAN: TR56 0009 9012 3456 7890 01</div>
+            <div class="bacts">
+              <button class="btn bp sm" onclick="openModal('trModal')">💸 Para Gönder</button>
+              <button class="btn bw sm" onclick="collectSalary()">💰 Maaşımı Çek</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hızlı Transfer Formu -->
+        <div class="tsec">
+          <div class="stitle">💸 Kullanıcıya Para Transferi</div>
+          <div class="iline">
+            <div class="fg"><label>Alıcı Kullanıcı Adı</label><input id="trTo" placeholder="Örn: mert"></div>
+            <div class="fg"><label>Transfer Miktarı (VL)</label><input type="number" id="trAmt" placeholder="0" min="1"></div>
+            <button class="btn bp sm" onclick="quickTr()" style="height:46px">Hemen Gönder</button>
+          </div>
+        </div>
+
+        <!-- İşlem Geçmişi -->
+        <div class="hsec">
+          <div class="stitle">📜 Hesap Dökümü & İşlem Geçmişi</div>
+          <ul class="tlist" id="bHist">
+            <li class="empty"><div class="ei">📭</div><p>Henüz işlem yok</p></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- VELETİNDEN PAZARI -->
+    <div class="cp" id="p-market" style="display:none">
+      <div class="ph">
+        <div>
+          <h1>🛒 Veletinden Pazarı</h1>
+          <p>Pro, Plus ve Ultra üyelerin gerçek fotoğraflı ilanları. Defo ve fiyat detayları garantili!</p>
+        </div>
+      </div>
+      <div class="pb2">
+        <div class="mh">
+          <span style="color:var(--text2);font-size:.85rem" id="mInfo">Pazar vitrini yükleniyor...</span>
+          <button class="btn bp sm" id="newLBtn" onclick="openModal('listModal')">+ Fotoğraflı İlan Ver</button>
+        </div>
+        <div class="lgrid" id="lGrid">
+          <div class="empty" style="grid-column:1/-1"><div class="ei">🏪</div><p>Henüz ilan yok</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KART İSTEĞİ SAYFASI -->
+    <div class="cp" id="p-card" style="display:none">
+      <div class="ph">
+        <div>
+          <h1>💳 Özel Kart İsteği</h1>
+          <p>Banka kartınızın tasarımını kendiniz belirleyin, admin size özel hazırlasın!</p>
+        </div>
+      </div>
+      <div class="pb2">
+        <div class="tsec">
+          <div class="stitle">✨ Yeni Kart Tasarımı Talep Et</div>
+          <div class="fg">
+            <label>Kartın nasıl olsun? Rengi, tasarımı, üzerindeki yazı veya logonun detaylarını yazın:</label>
+            <textarea id="cardDesc" rows="4" placeholder="Örn: Mat siyah arka plan, altın sarısı isim, arkasında 'Kapuçino VIP Club' yazısı olsun..."></textarea>
+          </div>
+          <button class="btn bp sm" onclick="sendCardReq()">💳 Kart İsteğimi İlet</button>
+        </div>
+
+        <div style="margin-top:24px">
+          <div class="stitle">📋 Kart İsteklerim ve Teslimat Durumu</div>
+          <div id="myCardReqs"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PLANLAR / YÜKSELT -->
+    <div class="cp" id="p-plans" style="display:none">
+      <div class="ph">
+        <div>
+          <h1>💎 Üyelik Yükseltme</h1>
+          <p>Planını yükselterek daha yüksek haftalık maaş ve pazar ayrıcalığı kazan</p>
+        </div>
+      </div>
+      <div class="pb2">
+        <div class="pusec" id="curPI"></div>
+        <div class="pgrid" id="upGrid"></div>
+        <div id="pendI" style="margin-top:20px"></div>
+      </div>
+    </div>
+
+    <!-- PROFİL -->
+    <div class="cp" id="p-profile" style="display:none">
+      <div class="ph">
+        <div>
+          <h1>👤 Kullanıcı Profili</h1>
+          <p>Hesap ve kart bilgileriniz</p>
+        </div>
+      </div>
+      <div class="pb2">
+        <div class="sc" style="max-width:540px">
+          <div style="display:flex;align-items:center;gap:20px;margin-bottom:20px">
+            <div class="uav" id="prAv" style="width:68px;height:68px;font-size:1.6rem">K</div>
+            <div>
+              <h3 id="prNm">-</h3>
+              <span class="urole" id="prRl">FREE</span>
+            </div>
+          </div>
+          <div style="display:grid;gap:14px">
+            <div><span style="color:var(--text2);font-size:.85rem">Bakiye:</span> <strong id="prBal">0 VL</strong></div>
+            <div><span style="color:var(--text2);font-size:.85rem">Üyelik Planı:</span> <strong id="prPlan">Free</strong></div>
+            <div><span style="color:var(--text2);font-size:.85rem">Haftalık Maaş:</span> <strong id="prSal">10 VL</strong></div>
+            <div><span style="color:var(--text2);font-size:.85rem">Kayıt Tarihi:</span> <strong id="prDate">-</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADMIN PANEL -->
+    <div class="cp" id="p-admin" style="display:none">
+      <div class="ph">
+        <div>
+          <h1>⚙️ Kapuçino Yönetim Paneli</h1>
+          <p>Üyelik onayları, kart istekleri, ilanlar ve bakiye yönetimi</p>
+        </div>
+      </div>
+      <div class="pb2">
+        <div class="atabs">
+          <button class="atab on" onclick="aTab('req',this)">📩 Plan İstekleri</button>
+          <button class="atab" onclick="aTab('crd',this)">💳 Kart İstekleri</button>
+          <button class="atab" onclick="aTab('usr',this)">👥 Kullanıcılar</button>
+          <button class="atab" onclick="aTab('lst',this)">🛒 İlanlar</button>
+          <button class="atab" onclick="aTab('set',this)">⚙️ Ayarlar & Bulut</button>
+        </div>
+        <div id="admC"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MODALLAR ==================== -->
+<!-- Para Gönder Modal -->
+<div class="mo" id="trModal">
+  <div class="modal">
+    <h3>💸 Para Gönder</h3>
+    <div class="fg"><label>Alıcı Kullanıcı Adı</label><input id="mTrTo" placeholder="Örn: mert"></div>
+    <div class="fg"><label>Miktar (VL)</label><input type="number" id="mTrAmt" placeholder="0" min="1"></div>
+    <div style="display:flex;gap:10px">
+      <button class="btn bp" onclick="modalTr()">Gönder</button>
+      <button class="btn bo" onclick="closeModal('trModal')">İptal</button>
+    </div>
+  </div>
+</div>
+
+<!-- Yeni İlan Modal (GERÇEK GÖRSEL YÜKLEME DESTEKLİ) -->
+<div class="mo" id="listModal">
+  <div class="modal">
+    <h3>📦 Veletinden'e İlan Ver</h3>
+    
+    <!-- Gerçek Dosya / Fotoğraf Yükleme Bölgesi -->
+    <div class="fg">
+      <label>Ürün Fotoğrafı (Dosyadan / Galeriden Yükleyin)</label>
+      <div class="upload-dropzone" onclick="document.getElementById('liFile').click()">
+        <div id="uploadPlaceholder">
+          <div style="font-size:2.2rem;margin-bottom:6px">📷</div>
+          <div style="font-weight:700">Fotoğraf Seçmek İçin Tıkla</div>
+          <div style="font-size:0.75rem;color:var(--text2);margin-top:2px">Galeriden veya kameradan görsel seçin (Otomatik optimize edilir)</div>
+        </div>
+        <div id="uploadPreviewWrap" style="display:none;position:relative">
+          <img id="uploadPreviewImg" style="width:100%;height:180px;object-fit:cover;border-radius:12px">
+          <button type="button" class="btn bd sm" onclick="removeSelectedImage(event)" style="position:absolute;top:8px;right:8px;padding:4px 10px;font-size:0.75rem">Kaldır</button>
+        </div>
+      </div>
+      <input type="file" id="liFile" accept="image/*" style="display:none" onchange="handleImageSelect(event)">
+    </div>
+
+    <div class="fg"><label>İlan Başlığı</label><input id="liTi" placeholder="Örn: Oyuncu Kulaklığı"></div>
+    <div class="fg"><label>Açıklama</label><textarea id="liDe" rows="2" placeholder="Ürün detayları..."></textarea></div>
+    
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div class="fg"><label>Fiyat (VL)</label><input type="number" id="liPrVL" placeholder="Örn: 200" min="0"></div>
+      <div class="fg"><label>Fiyat (TL / Lira)</label><input type="number" step="0.01" id="liPrTL" placeholder="Örn: 2.00" min="0"></div>
+    </div>
+    
+    <div class="fg">
+      <label>Defo / Kusur Durumu</label>
+      <select id="liDefoSelect">
+        <option value="none">Sıfır Ayarında / Defosuz</option>
+        <option value="slight">Hafif Kusurlu (Kılcal Çizikler / Kutusu Açık)</option>
+        <option value="heavy">Defolu (Görünür hasar / parça eksiği)</option>
+      </select>
+    </div>
+    <div class="fg"><label>Defo Açıklaması (Opsiyonel)</label><input id="liDefoCustom" placeholder="Örn: Sol köşesinde minik çizik var"></div>
+    
+    <div style="display:flex;gap:10px;margin-top:10px">
+      <button class="btn bp" onclick="createListing()">İlanı Yayınla</button>
+      <button class="btn bo" onclick="closeModal('listModal')">İptal</button>
+    </div>
+  </div>
+</div>
+
+<!-- Admin Giriş Modal -->
+<div class="mo" id="admLModal">
+  <div class="modal">
+    <h3>🔐 Admin Girişi</h3>
+    <div class="fg"><label>Yönetici Şifresi</label><input type="password" id="admPw" placeholder="Şifrenizi girin"></div>
+    <div style="display:flex;gap:10px">
+      <button class="btn bp" onclick="admLogin()">Giriş Yap</button>
+      <button class="btn bo" onclick="closeModal('admLModal')">İptal</button>
+    </div>
+  </div>
+</div>
+
+<!-- Kullanıcı Düzenle Modal -->
+<div class="mo" id="editUModal">
+  <div class="modal">
+    <h3>✏️ Kullanıcı Bakiye ve Rol Düzenle</h3>
+    <input type="hidden" id="euTgt">
+    <div class="fg">
+      <label>Üyelik Rolü</label>
+      <select id="euPlan">
+        <option value="free">Free (Gri)</option>
+        <option value="pro">Pro (Mavi)</option>
+        <option value="plus">Plus (Mor)</option>
+        <option value="ultra">Ultra (Altın)</option>
+      </select>
+    </div>
+    <div class="fg"><label>Bakiye (VL)</label><input type="number" id="euBal" min="0"></div>
+    <div style="display:flex;gap:10px">
+      <button class="btn bp" onclick="saveUEdit()">Kaydet</button>
+      <button class="btn bo" onclick="closeModal('editUModal')">İptal</button>
+    </div>
+  </div>
+</div>
+
+<!-- Satın Alma Onay Modal -->
+<div class="mo" id="buyModal">
+  <div class="modal">
+    <h3>🛒 Satın Alma Onayı</h3>
+    <p id="buyTxt" style="line-height:1.6;margin-bottom:16px"></p>
+    <input type="hidden" id="buyId">
+    <div style="display:flex;gap:10px">
+      <button class="btn bs" onclick="confirmBuy()">Onayla ve Satın Al</button>
+      <button class="btn bo" onclick="closeModal('buyModal')">Vazgeç</button>
+    </div>
+  </div>
+</div>
+
+<!-- Kart İsteği Yanıtlama Modal -->
+<div class="mo" id="cardRespModal">
+  <div class="modal">
+    <h3>💳 Kart İsteği Teslimat Yanıtı</h3>
+    <input type="hidden" id="crId">
+    <div class="fg">
+      <label>Kullanıcıya İletilecek Teslimat / Yapıldı Mesajı:</label>
+      <textarea id="crMsg" rows="3" placeholder="Örn: Özel altın kartınız hazırlandı, kargoya verildi. Takip no: KP99281"></textarea>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button class="btn bs" onclick="respondCard()">✅ Yapıldı Olarak İşaretle</button>
+      <button class="btn bo" onclick="closeModal('cardRespModal')">İptal</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ==================== SABİTLER ====================
+const ADMIN_PW = 'Yc544936.';
+const SAL = { free: 10, pro: 100, plus: 200, ultra: 1000 };
+const WEEK = 7 * 24 * 60 * 60 * 1000;
+const PCOL = { free: '#9ca3af', pro: '#38bdf8', plus: '#c084fc', ultra: '#fbbf24' };
+const PNM = { free: 'FREE', pro: 'PRO', plus: 'PLUS', ultra: 'ULTRA' };
+const PEM = { free: '⚪', pro: '🔵', plus: '🟣', ultra: '⭐' };
+const RCL = { free: 'rf', pro: 'rp', plus: 'rpl', ultra: 'ru' };
+
+let me = null;
+let isAdm = false;
+let curAT = 'req';
+let currentUploadedImage = ''; // Seçilen gerçek fotoğrafın Base64 verisi
+
+// ==================== GÖRSEL İŞLEME (CANVAS İLE OTOMATİK SIKIŞTIRMA) ====================
+function handleImageSelect(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const img = new Image();
+    img.onload = function() {
+      // Görseli maksimum 450px genişlik/yükseklikte optimize et (Hızlı yükleme ve hafif veri tabanı için)
+      const canvas = document.createElement('canvas');
+      const maxDim = 450;
+      let width = img.width;
+      let height = img.height;
+
+      if (width > height) {
+        if (width > maxDim) {
+          height = Math.round((height * maxDim) / width);
+          width = maxDim;
+        }
+      } else {
+        if (height > maxDim) {
+          width = Math.round((width * maxDim) / height);
+          height = maxDim;
+        }
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, width, height);
+
+      currentUploadedImage = canvas.toDataURL('image/jpeg', 0.75);
+
+      // Önizlemeyi göster
+      document.getElementById('uploadPlaceholder').style.display = 'none';
+      document.getElementById('uploadPreviewWrap').style.display = 'block';
+      document.getElementById('uploadPreviewImg').src = currentUploadedImage;
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function removeSelectedImage(e) {
+  e.stopPropagation();
+  currentUploadedImage = '';
+  document.getElementById('liFile').value = '';
+  document.getElementById('uploadPlaceholder').style.display = 'block';
+  document.getElementById('uploadPreviewWrap').style.display = 'none';
+  document.getElementById('uploadPreviewImg').src = '';
+}
+
+// ==================== YARDIMCILAR ====================
+function esc(t) { let d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+function notify(m, t = 'inf') {
+  let n = document.createElement('div');
+  n.className = 'notif ' + (t === 'ok' ? 'ok' : t === 'err' ? 'err' : 'inf');
+  n.textContent = m;
+  document.body.appendChild(n);
+  setTimeout(() => n.remove(), 3800);
+}
+function openModal(id) { document.getElementById(id).classList.add('show'); }
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+document.querySelectorAll('.mo').forEach(o => o.addEventListener('click', e => { if (e.target === o) o.classList.remove('show'); }));
+function togSide() { document.getElementById('sidebar').classList.toggle('open'); }
+function getU(u) { return db.users.find(x => x.username.toLowerCase() === u.toLowerCase()); }
+function meR() { if (me) me = getU(me.username); }
+
+function refreshCurrentPage() {
+  updSide();
+  updBadge();
+  const activePage = document.querySelector('.content-page[style*="block"], .cp[style*="block"]');
+  if (activePage) {
+    const pageId = activePage.id.replace('p-', '');
+    if (pageId === 'dash') rDash();
+    if (pageId === 'bank') rBank();
+    if (pageId === 'market') rMkt();
+    if (pageId === 'card') rCard();
+    if (pageId === 'plans') rPlans();
+    if (pageId === 'profile') rProf();
+    if (pageId === 'admin') rAdm();
+  }
+}
+
+// ==================== GİRİŞ & KAYIT ====================
+function authTab(t) {
+  document.querySelectorAll('.tab').forEach((b, i) => b.classList.toggle('on', (t === 'login' && i === 0) || (t === 'register' && i === 1)));
+  document.getElementById('loginForm').style.display = t === 'login' ? 'block' : 'none';
+  document.getElementById('registerForm').style.display = t === 'register' ? 'block' : 'none';
+}
+
+async function register() {
+  let u = document.getElementById('rUser').value.trim();
+  let p = document.getElementById('rPass').value;
+  let p2 = document.getElementById('rPass2').value;
+  if (!u || !p) return notify('Lütfen tüm alanları doldurun!', 'err');
+  if (u.length < 3) return notify('Kullanıcı adı en az 3 karakter olmalı!', 'err');
+  if (p !== p2) return notify('Şifreler uyuşmuyor!', 'err');
+  if (getU(u)) return notify('Bu kullanıcı adı zaten mevcut!', 'err');
+
+  let randIban = "TR56 0009 9012 " + Math.floor(1000 + Math.random() * 9000) + " " + Math.floor(1000 + Math.random() * 9000) + " " + Math.floor(10 + Math.random() * 90);
+  let randCard = "4532 " + Math.floor(1000 + Math.random() * 9000) + " " + Math.floor(1000 + Math.random() * 9000) + " " + Math.floor(1000 + Math.random() * 9000);
+
+  let nu = {
+    username: u,
+    password: p,
+    plan: null,
+    balance: 0,
+    lastSalary: 0,
+    createdAt: Date.now(),
+    iban: randIban,
+    cardNo: randCard
+  };
+  db.users.push(nu);
+  me = nu;
+  await pushCloudDB();
+
+  document.getElementById('authPage').style.display = 'none';
+  document.getElementById('planPage').style.display = 'flex';
+  notify('Hesabınız oluşturuldu! Şimdi üyeliğinizi seçin.', 'ok');
+}
+
+async function selPlan(plan) {
+  let u = getU(me.username);
+  if (plan === 'free') {
+    u.plan = 'free';
+    u.balance = 10;
+    u.lastSalary = Date.now();
+    me = u;
+    await pushCloudDB();
+    notify('Free plan aktif! 10 VL hoş geldin bonusu hesabınıza yatırıldı.', 'ok');
+    enterApp();
+  } else {
+    db.requests.push({
+      id: Date.now(),
+      username: me.username,
+      requestedPlan: plan,
+      currentPlan: 'free',
+      status: 'pending',
+      type: 'initial',
+      timestamp: Date.now(),
+      seen: false
+    });
+    u.plan = 'free';
+    u.balance = 0;
+    u.lastSalary = Date.now();
+    me = u;
+    await pushCloudDB();
+    notify(PNM[plan] + ' plan talebi admin onayına iletildi! Şimdilik Free olarak giriş yaptınız.', 'inf');
+    enterApp();
+  }
+}
+
+function login() {
+  let u = document.getElementById('lUser').value.trim();
+  let p = document.getElementById('lPass').value;
+  if (!u || !p) return notify('Lütfen kullanıcı adı ve şifrenizi girin!', 'err');
+  let user = db.users.find(x => x.username.toLowerCase() === u.toLowerCase() && x.password === p);
+  if (!user) return notify('Kullanıcı adı veya şifre hatalı!', 'err');
+
+  if (!user.plan) {
+    me = user;
+    document.getElementById('authPage').style.display = 'none';
+    document.getElementById('planPage').style.display = 'flex';
+    return;
+  }
+  me = user;
+  if (user.username === 'admin') isAdm = true;
+  notify('Giriş başarılı! Hoş geldin ' + user.username, 'ok');
+  enterApp();
+}
+
+function logout() {
+  me = null;
+  isAdm = false;
+  document.getElementById('appPage').style.display = 'none';
+  document.getElementById('authPage').style.display = 'flex';
+  document.getElementById('lUser').value = '';
+  document.getElementById('lPass').value = '';
+  authTab('login');
+}
+
+// ==================== UYGULAMA GİRİŞİ ====================
+function enterApp() {
+  document.getElementById('authPage').style.display = 'none';
+  document.getElementById('planPage').style.display = 'none';
+  document.getElementById('appPage').style.display = 'block';
+  updSide();
+  nav('dash');
+  updBadge();
+
+  let ap = db.requests.find(r => r.username.toLowerCase() === me.username.toLowerCase() && r.status === 'approved' && !r.seen);
+  if (ap) {
+    ap.seen = true;
+    pushCloudDB();
+    notify('🎉 Harika haber! ' + PNM[ap.requestedPlan] + ' üyeliğiniz admin tarafından onaylandı!', 'ok');
+    meR();
+    updSide();
+  }
+}
+
+function updSide() {
+  if (!me) return;
+  let pl = me.plan || 'free';
+  let av = document.getElementById('sAv');
+  av.textContent = me.username[0].toUpperCase();
+  av.className = 'uav ' + pl;
+  document.getElementById('sNm').textContent = me.username;
+  let r = document.getElementById('sRl');
+  r.textContent = PNM[pl] + ' ' + PEM[pl];
+  r.className = 'urole ' + RCL[pl];
+  if (isAdm) {
+    r.textContent = 'ADMIN 🛡️';
+    r.className = 'urole ra';
+  }
+}
+
+function updBadge() {
+  let c = db.requests.filter(r => r.status === 'pending').length + db.cardRequests.filter(r => r.status === 'pending').length;
+  let b = document.getElementById('admBadge');
+  if (c > 0) { b.style.display = 'inline'; b.textContent = c; } else { b.style.display = 'none'; }
+}
+
+// ==================== NAVİGASYON ====================
+function nav(pg) {
+  document.querySelectorAll('.cp').forEach(p => p.style.display = 'none');
+  document.querySelectorAll('.ni').forEach(n => n.classList.remove('on'));
+  let el = document.getElementById('p-' + pg);
+  if (el) el.style.display = 'block';
+  let ni = document.querySelector(`.ni[data-p="${pg}"]`);
+  if (ni) ni.classList.add('on');
+  meR();
+
+  if (pg === 'dash') rDash();
+  if (pg === 'bank') rBank();
+  if (pg === 'market') rMkt();
+  if (pg === 'card') rCard();
+  if (pg === 'plans') rPlans();
+  if (pg === 'profile') rProf();
+  if (pg === 'admin') rAdm();
+
+  updSide();
+  document.getElementById('sidebar').classList.remove('open');
+}
+
+// ==================== DASHBOARD ====================
+function rDash() {
+  let pl = me.plan || 'free';
+  let sal = SAL[pl] * (db.settings.salaryMultiplier || 1);
+  document.getElementById('dBal').textContent = me.balance + ' VL';
+  let dp = document.getElementById('dPlan');
+  dp.textContent = PNM[pl] + ' ' + PEM[pl];
+  dp.style.color = PCOL[pl];
+  document.getElementById('dSal').textContent = sal + ' VL';
+
+  let next = (me.lastSalary || Date.now()) + WEEK;
+  let rem = next - Date.now();
+  let dn = document.getElementById('dNext');
+  if (rem > 0) {
+    let d = Math.floor(rem / (24 * 3600000));
+    let h = Math.floor((rem % (24 * 3600000)) / 3600000);
+    dn.textContent = d + ' gün ' + h + ' sa';
+    dn.style.color = '';
+  } else {
+    dn.textContent = 'Maaş Hazır! 🎉';
+    dn.style.color = '#22c55e';
+  }
+  rTxL('dTx', db.transactions.filter(t => t.from === me.username || t.to === me.username).sort((a, b) => b.timestamp - a.timestamp).slice(0, 5));
+}
+
+// ==================== BANKA SAYFASI ====================
+function rBank() {
+  let pl = me.plan || 'free';
+  document.getElementById('bBal').innerHTML = me.balance + ' <span class="bbc">VL</span>';
+  document.getElementById('bIbanText').textContent = 'IBAN: ' + (me.iban || 'TR56 0009 9012 3456 7890 01');
+
+  // Kart Vitrini Güncelle
+  let cardEl = document.getElementById('myCreditCard');
+  cardEl.className = 'credit-card ' + pl;
+  document.getElementById('cardTierName').textContent = PNM[pl] + ' CARD ' + PEM[pl];
+  document.getElementById('cardNumberText').textContent = me.cardNo || '4532 9988 7766 0001';
+  document.getElementById('cardHolderName').textContent = me.username.toUpperCase();
+
+  rTxL('bHist', db.transactions.filter(t => t.from === me.username || t.to === me.username).sort((a, b) => b.timestamp - a.timestamp));
+}
+
+function rTxL(cid, txs) {
+  let c = document.getElementById(cid);
+  if (!txs.length) {
+    c.innerHTML = '<li class="empty"><div class="ei">📭</div><p>Henüz işlem hareketi yok</p></li>';
+    return;
+  }
+  c.innerHTML = txs.map(tx => {
+    let inc = tx.to.toLowerCase() === me.username.toLowerCase();
+    let sal = tx.type === 'salary';
+    let pur = tx.type === 'purchase';
+    let ic = inc ? 'inc' : 'out', em = inc ? '📥' : '📤';
+    if (sal) { ic = 'sal'; em = '💰'; }
+    if (pur) em = inc ? '💵' : '🛒';
+
+    let desc = sal ? 'Haftalık Maaş Ödemesi' : pur ? (inc ? 'Ürün Satışı: ' + (tx.listingTitle || '') : 'Pazar Alımı: ' + (tx.listingTitle || '')) : (inc ? tx.from + " kullanıcısından transfer" : tx.to + " kullanıcısına transfer");
+    let dt = new Date(tx.timestamp).toLocaleDateString('tr-TR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
+    return `<li class="titem">
+      <div class="txi">
+        <div class="txic ${ic}">${em}</div>
+        <div>
+          <div class="txd">${desc}</div>
+          <div class="txdt">${dt}</div>
+        </div>
+      </div>
+      <div class="txa ${inc ? 'pos' : 'neg'}">${(inc ? '+' : '-') + tx.amount} VL</div>
+    </li>`;
+  }).join('');
+}
+
+async function doTr(to, amt) {
+  if (!to || !amt || amt <= 0) return notify('Lütfen geçerli alıcı ve miktar girin!', 'err');
+  if (to.toLowerCase() === me.username.toLowerCase()) return notify('Kendinize transfer yapamazsınız!', 'err');
+  let s = getU(me.username);
+  let r = getU(to);
+  if (!r) return notify('Alıcı kullanıcı adı bulunamadı!', 'err');
+  if (s.balance < amt) return notify('Yetersiz bakiye!', 'err');
+
+  s.balance -= amt;
+  r.balance += amt;
+  me = s;
+  db.transactions.push({ from: s.username, to: r.username, amount: amt, type: 'transfer', timestamp: Date.now() });
+  await pushCloudDB();
+  notify(amt + ' VL başarıyla ' + r.username + ' kullanıcısına gönderildi!', 'ok');
+  rBank();
+}
+
+function quickTr() {
+  let to = document.getElementById('trTo').value.trim();
+  let a = parseInt(document.getElementById('trAmt').value);
+  doTr(to, a);
+  document.getElementById('trTo').value = '';
+  document.getElementById('trAmt').value = '';
+}
+
+function modalTr() {
+  let to = document.getElementById('mTrTo').value.trim();
+  let a = parseInt(document.getElementById('mTrAmt').value);
+  doTr(to, a);
+  closeModal('trModal');
+  document.getElementById('mTrTo').value = '';
+  document.getElementById('mTrAmt').value = '';
+}
+
+async function collectSalary() {
+  let now = Date.now();
+  let ts = now - (me.lastSalary || 0);
+  if (ts < WEEK) {
+    let rem = WEEK - ts;
+    let d = Math.floor(rem / (24 * 3600000));
+    let h = Math.floor((rem % (24 * 3600000)) / 3600000);
+    return notify('Maaş zamanı henüz gelmedi! Kalan süre: ' + d + ' gün ' + h + ' saat', 'err');
+  }
+  let pl = me.plan || 'free';
+  let sal = SAL[pl] * (db.settings.salaryMultiplier || 1);
+  let u = getU(me.username);
+  u.balance += sal;
+  u.lastSalary = now;
+  me = u;
+  db.transactions.push({ from: 'KAPUÇINO', to: me.username, amount: sal, type: 'salary', timestamp: now });
+  await pushCloudDB();
+  notify('💰 ' + sal + ' VL maaşınız hesabınıza yatırıldı!', 'ok');
+  rBank();
+}
+
+// ==================== VELETİNDEN PAZARI ====================
+function rMkt() {
+  let pl = me.plan || 'free';
+  let btn = document.getElementById('newLBtn');
+  let info = document.getElementById('mInfo');
+
+  if (pl === 'free') {
+    btn.style.display = 'none';
+    info.textContent = 'Free üyeler sadece alışveriş yapabilir. İlan açmak için Pro/Plus/Ultra olmalısınız.';
+  } else {
+    btn.style.display = '';
+    info.textContent = 'Veletinden ilanlarınızı fotoğraflı olarak hemen yayınlayabilirsiniz.';
+  }
+
+  let ls = db.listings.filter(l => !l.deleted).sort((a, b) => {
+    if (a.pinned && !b.pinned) return -1;
+    if (!a.pinned && b.pinned) return 1;
+    return b.createdAt - a.createdAt;
+  });
+
+  let g = document.getElementById('lGrid');
+  if (!ls.length) {
+    g.innerHTML = '<div class="empty" style="grid-column:1/-1"><div class="ei">🏪</div><p>Pazarda henüz ilan bulunmuyor</p></div>';
+    return;
+  }
+
+  g.innerHTML = ls.map(l => {
+    let seller = getU(l.seller);
+    let sp = seller ? seller.plan : 'free';
+    let img = l.image ? `<div class="limg"><img src="${l.image}" onerror="this.parentElement.innerHTML='📦'"></div>` : '<div class="limg">📦</div>';
+    let pin = l.pinned ? '<div style="position:absolute;top:10px;right:10px;background:rgba(251,191,36,.95);color:#000;padding:3px 9px;border-radius:6px;font-size:.72rem;font-weight:800;z-index:2">📌 VİP SABİT</div>' : '';
+
+    let defoClass = l.defo === 'none' ? 'defo-none' : l.defo === 'slight' ? 'defo-slight' : 'defo-heavy';
+    let defoText = l.defoText || (l.defo === 'none' ? 'Sıfır / Defosuz' : l.defo === 'slight' ? 'Hafif Çizikli' : 'Defolu / Kusurlu');
+
+    let own = l.seller.toLowerCase() === me.username.toLowerCase();
+    let bb = !own
+      ? `<button class="btn bp sm" onclick="buyList(${l.id})">Satın Al</button>`
+      : `<button class="btn bd sm" onclick="delList(${l.id})">İlanı Kaldır</button>`;
+
+    return `<div class="lcard">
+      ${pin}
+      ${img}
+      <div class="lbody">
+        <div>
+          <div class="lt">${esc(l.title)}</div>
+          <div class="defo-badge ${defoClass}">🔍 ${esc(defoText)}</div>
+          <div class="ld">${esc(l.description || '')}</div>
+        </div>
+        <div class="lf">
+          <div>
+            <div class="lpr">${l.priceVL} VL <small>${l.priceTL ? l.priceTL + ' TL' : (l.priceVL / 100).toFixed(2) + ' TL'}</small></div>
+            <div class="ls"><span style="color:${PCOL[sp]}">${PEM[sp]}</span> ${esc(l.seller)}</div>
+          </div>
+          ${bb}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function createListing() {
+  let pl = me.plan || 'free';
+  if (pl === 'free') return notify('İlan vermek için Pro, Plus veya Ultra üye olmalısınız!', 'err');
+
+  let t = document.getElementById('liTi').value.trim();
+  let d = document.getElementById('liDe').value.trim();
+  let pVL = parseInt(document.getElementById('liPrVL').value);
+  let pTL = parseFloat(document.getElementById('liPrTL').value);
+  let defo = document.getElementById('liDefoSelect').value;
+  let customDefo = document.getElementById('liDefoCustom').value.trim();
+
+  if (!t) return notify('Lütfen ilan başlığı girin!', 'err');
+  if (isNaN(pVL) || pVL < 0) return notify('Lütfen geçerli bir VL fiyatı girin!', 'err');
+  if (isNaN(pTL) || pTL < 0) pTL = (pVL / 100);
+
+  let defoText = customDefo || (defo === 'none' ? 'Sıfır Ayarında / Defosuz' : defo === 'slight' ? 'Hafif Kusurlu / Kılcal Çizik' : 'Defolu Ürün');
+
+  db.listings.push({
+    id: Date.now(),
+    seller: me.username,
+    title: t,
+    description: d,
+    priceVL: pVL,
+    priceTL: pTL,
+    defo: defo,
+    defoText: defoText,
+    image: currentUploadedImage || '',
+    pinned: pl === 'ultra',
+    deleted: false,
+    createdAt: Date.now()
+  });
+
+  // Formu sıfırla
+  document.getElementById('liTi').value = '';
+  document.getElementById('liDe').value = '';
+  document.getElementById('liPrVL').value = '';
+  document.getElementById('liPrTL').value = '';
+  document.getElementById('liDefoCustom').value = '';
+  removeSelectedImage({ stopPropagation: () => {} });
+  closeModal('listModal');
+
+  await pushCloudDB();
+  notify('Fotoğraflı ilanınız Veletinden pazarında başarıyla yayınlandı! 🎉', 'ok');
+  rMkt();
+}
+
+async function delList(id) {
+  let l = db.listings.find(x => x.id === id);
+  if (l) {
+    l.deleted = true;
+    await pushCloudDB();
+    notify('İlan kaldırıldı.', 'inf');
+    rMkt();
+  }
+}
+
+function buyList(id) {
+  let l = db.listings.find(x => x.id === id);
+  if (!l) return;
+  document.getElementById('buyId').value = id;
+  document.getElementById('buyTxt').innerHTML = `
+    <strong>${esc(l.title)}</strong> ürününü<br>
+    <strong style="color:var(--accent);font-size:1.2rem">${l.priceVL} VL (${l.priceTL || (l.priceVL/100)} TL)</strong> karşılığında satın almak istiyor musunuz?<br>
+    <small style="color:var(--text2)">Mevcut Bakiyeniz: ${me.balance} VL</small>
+  `;
+  openModal('buyModal');
+}
+
+async function confirmBuy() {
+  let id = parseInt(document.getElementById('buyId').value);
+  let l = db.listings.find(x => x.id === id);
+  if (!l || l.deleted) return notify('İlan artık mevcut değil!', 'err');
+
+  let buyer = getU(me.username);
+  let seller = getU(l.seller);
+
+  if (buyer.balance < l.priceVL) {
+    closeModal('buyModal');
+    return notify('Yetersiz bakiye! İlan fiyatı: ' + l.priceVL + ' VL', 'err');
+  }
+
+  buyer.balance -= l.priceVL;
+  if (seller) seller.balance += l.priceVL;
+  me = buyer;
+
+  db.transactions.push({
+    from: buyer.username,
+    to: l.seller,
+    amount: l.priceVL,
+    type: 'purchase',
+    listingTitle: l.title,
+    timestamp: Date.now()
+  });
+
+  l.deleted = true;
+  closeModal('buyModal');
+  await pushCloudDB();
+  notify('🛒 ' + l.title + ' başarıyla satın alındı!', 'ok');
+  rMkt();
+}
+
+// ==================== KART İSTEKLERİ ====================
+function rCard() {
+  let reqs = db.cardRequests.filter(r => r.username.toLowerCase() === me.username.toLowerCase()).sort((a, b) => b.timestamp - a.timestamp);
+  let container = document.getElementById('myCardReqs');
+  if (!reqs.length) {
+    container.innerHTML = '<div class="empty"><div class="ei">💳</div><p>Henüz bir kart tasarım isteğiniz bulunmuyor.</p></div>';
+    return;
+  }
+  container.innerHTML = reqs.map(r => {
+    let statusHtml = r.status === 'pending'
+      ? '<span class="card-req-status crs-pending">⏳ Admin İnceliyor</span>'
+      : '<span class="card-req-status crs-done">✅ Kartınız Hazırlandı & Teslim Edildi</span>';
+    let msgHtml = r.adminMessage ? `<div class="card-req-msg">📨 <strong>Yönetici Notu:</strong> ${esc(r.adminMessage)}</div>` : '';
+    let dt = new Date(r.timestamp).toLocaleDateString('tr-TR', { day: '2-digit', month: 'short', year: 'numeric' });
+    return `<div class="card-req">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        ${statusHtml}
+        <span style="color:var(--text2);font-size:.78rem">${dt}</span>
+      </div>
+      <div style="font-size:.92rem;line-height:1.6"><strong>Talep Edilen Tasarım:</strong> ${esc(r.description)}</div>
+      ${msgHtml}
+    </div>`;
+  }).join('');
+}
+
+async function sendCardReq() {
+  let desc = document.getElementById('cardDesc').value.trim();
+  if (!desc) return notify('Lütfen kartın nasıl olmasını istediğinizi anlatın!', 'err');
+  if (desc.length < 8) return notify('Lütfen biraz daha detaylı açıklayın!', 'err');
+
+  db.cardRequests.push({
+    id: Date.now(),
+    username: me.username,
+    description: desc,
+    status: 'pending',
+    adminMessage: '',
+    timestamp: Date.now()
+  });
+  document.getElementById('cardDesc').value = '';
+  await pushCloudDB();
+  notify('💳 Özel kart isteğiniz yöneticiye iletildi!', 'ok');
+  updBadge();
+  rCard();
+}
+
+// ==================== PLAN YÜKSELTME ====================
+function rPlans() {
+  let pl = me.plan || 'free';
+  let sal = SAL[pl];
+  document.getElementById('curPI').innerHTML = `
+    <div style="display:flex;align-items:center;gap:18px">
+      <div style="font-size:2.8rem">${PEM[pl]}</div>
+      <div>
+        <div style="font-size:1.35rem;font-weight:800;color:${PCOL[pl]}">${PNM[pl]} ÜYELİK</div>
+        <div style="color:var(--text2);font-size:.85rem">Mevcut planınız • Haftalık düzenli ${sal} VL maaş hakkı</div>
+      </div>
+    </div>
+  `;
+
+  let all = ['free', 'pro', 'plus', 'ultra'];
+  let ci = all.indexOf(pl);
+  let prices = { pro: { m: '0.25 TL', y: '2 TL' }, plus: { m: '0.50 TL', y: '5 TL' }, ultra: { m: '1 TL', y: '10 TL' } };
+  let g = document.getElementById('upGrid');
+  let up = all.filter(p => all.indexOf(p) > ci);
+
+  if (!up.length) {
+    g.innerHTML = '<div class="empty" style="grid-column:1/-1"><div class="ei">👑</div><p>Tebrikler! Zaten en üst seviye ULTRA VIP plandasınız.</p></div>';
+  } else {
+    g.innerHTML = up.map(p => `
+      <div class="pcard ${p}" onclick="reqUp('${p}')">
+        <div class="pn">${PNM[p]}</div>
+        <div class="pp">${prices[p] ? prices[p].m : 'Ücretsiz'}<small>/ay</small></div>
+        ${prices[p] ? `<div style="color:var(--text2);font-size:.8rem;margin-bottom:8px">veya ${prices[p].y}/yıl</div>` : ''}
+        <ul class="pf">
+          <li>Haftalık ${SAL[p]} VL maaş</li>
+          <li>Veletinden pazarında ilan açabilme</li>
+          <li>${PNM[p]} rozeti ${PEM[p]}</li>
+        </ul>
+        <button class="btn bp sm" style="width:100%">Talebi Gönder</button>
+      </div>
+    `).join('');
+  }
+
+  let pend = db.requests.find(r => r.username.toLowerCase() === me.username.toLowerCase() && r.status === 'pending');
+  document.getElementById('pendI').innerHTML = pend ? `
+    <div class="sc" style="border-color:rgba(245,158,11,.4)">
+      <div style="display:flex;align-items:center;gap:12px">
+        <span style="font-size:1.6rem">⏳</span>
+        <div>
+          <div style="font-weight:700">${PNM[pend.requestedPlan]} plan yükseltme talebiniz iletildi</div>
+          <div style="color:var(--text2);font-size:.82rem">Admin onayı bekleniyor, onaylandığında otomatik olarak aktifleşecektir.</div>
+        </div>
+      </div>
+    </div>
+  ` : '';
+}
+
+async function reqUp(plan) {
+  if (db.requests.find(r => r.username.toLowerCase() === me.username.toLowerCase() && r.status === 'pending')) {
+    return notify('Zaten incelemede olan bir plan talebiniz bulunuyor!', 'err');
+  }
+  db.requests.push({
+    id: Date.now(),
+    username: me.username,
+    requestedPlan: plan,
+    currentPlan: me.plan,
+    status: 'pending',
+    type: 'upgrade',
+    timestamp: Date.now(),
+    seen: false
+  });
+  await pushCloudDB();
+  notify(PNM[plan] + ' üyelik talebi admin onayına gönderildi!', 'inf');
+  updBadge();
+  rPlans();
+}
+
+// ==================== PROFİL ====================
+function rProf() {
+  let pl = me.plan || 'free';
+  let sal = SAL[pl];
+  let av = document.getElementById('prAv');
+  av.textContent = me.username[0].toUpperCase();
+  av.className = 'uav ' + pl;
+  document.getElementById('prNm').textContent = me.username;
+  let r = document.getElementById('prRl');
+  r.textContent = PNM[pl] + ' ' + PEM[pl];
+  r.className = 'urole ' + RCL[pl];
+  document.getElementById('prBal').textContent = me.balance + ' VL';
+  let pp = document.getElementById('prPlan');
+  pp.textContent = PNM[pl];
+  pp.style.color = PCOL[pl];
+  document.getElementById('prSal').textContent = sal + ' VL / hafta';
+  document.getElementById('prDate').textContent = new Date(me.createdAt).toLocaleDateString('tr-TR');
+}
+
+// ==================== ADMIN PANELİ ====================
+function openAdmLogin() {
+  if (isAdm) { nav('admin'); return; }
+  openModal('admLModal');
+}
+
+function admLogin() {
+  let pw = document.getElementById('admPw').value;
+  if (pw === ADMIN_PW) {
+    isAdm = true;
+    closeModal('admLModal');
+    document.getElementById('admPw').value = '';
+    notify('Admin girişi başarıyla sağlandı!', 'ok');
+    updSide();
+    nav('admin');
+  } else {
+    notify('Admin şifresi hatalı!', 'err');
+  }
+}
+
+function aTab(t, el) {
+  curAT = t;
+  document.querySelectorAll('.atab').forEach(b => b.classList.remove('on'));
+  el.classList.add('on');
+  rAdm();
+}
+
+function rAdm() {
+  if (!isAdm) return;
+  let c = document.getElementById('admC');
+  if (curAT === 'req') rAReq(c);
+  else if (curAT === 'crd') rACrd(c);
+  else if (curAT === 'usr') rAUsr(c);
+  else if (curAT === 'lst') rALst(c);
+  else if (curAT === 'set') rASet(c);
+}
+
+// Plan İstekleri
+function rAReq(c) {
+  let rs = db.requests.sort((a, b) => b.timestamp - a.timestamp);
+  if (!rs.length) {
+    c.innerHTML = '<div class="empty"><div class="ei">📭</div><p>Henüz plan isteği yok</p></div>';
+    return;
+  }
+  c.innerHTML = `<div style="overflow-x:auto"><table class="at">
+    <tr><th>Kullanıcı</th><th>İstenen Plan</th><th>Talep Türü</th><th>Tarih</th><th>Durum</th><th>İşlem</th></tr>
+    ${rs.map(r => `<tr>
+      <td><strong>${esc(r.username)}</strong></td>
+      <td><span style="color:${PCOL[r.requestedPlan]};font-weight:700">${PNM[r.requestedPlan]} ${PEM[r.requestedPlan]}</span></td>
+      <td>${r.type === 'initial' ? 'İlk Kayıt' : 'Yükseltme'}</td>
+      <td>${new Date(r.timestamp).toLocaleDateString('tr-TR')}</td>
+      <td>${r.status === 'pending' ? '<span style="color:#f59e0b;font-weight:600">⏳ Bekliyor</span>' : r.status === 'approved' ? '<span style="color:#22c55e;font-weight:600">✅ Onaylandı</span>' : '<span style="color:#ef4444;font-weight:600">❌ Reddedildi</span>'}</td>
+      <td>${r.status === 'pending' ? `<button class="btn bs sm" onclick="appReq(${r.id})" style="margin-right:6px">✅ Onayla</button><button class="btn bd sm" onclick="rejReq(${r.id})">❌ Reddet</button>` : '-'}</td>
+    </tr>`).join('')}
+  </table></div>`;
+}
+
+async function appReq(id) {
+  let r = db.requests.find(x => x.id === id);
+  if (!r) return;
+  r.status = 'approved';
+  let u = getU(r.username);
+  if (u) {
+    u.plan = r.requestedPlan;
+    if (me && me.username.toLowerCase() === u.username.toLowerCase()) {
+      me = u;
+      updSide();
+    }
+  }
+  await pushCloudDB();
+  notify(r.username + ' kullanıcısının ' + PNM[r.requestedPlan] + ' planı onaylandı!', 'ok');
+  updBadge();
+  rAdm();
+}
+
+async function rejReq(id) {
+  let r = db.requests.find(x => x.id === id);
+  if (!r) return;
+  r.status = 'rejected';
+  await pushCloudDB();
+  notify(r.username + ' isteği reddedildi.', 'inf');
+  updBadge();
+  rAdm();
+}
+
+// Kart İstekleri (Admin)
+function rACrd(c) {
+  let rs = db.cardRequests.sort((a, b) => b.timestamp - a.timestamp);
+  if (!rs.length) {
+    c.innerHTML = '<div class="empty"><div class="ei">💳</div><p>Kart isteği yok</p></div>';
+    return;
+  }
+  c.innerHTML = `<div style="overflow-x:auto"><table class="at">
+    <tr><th>Kullanıcı</th><th>İstenen Kart Tasarımı</th><th>Tarih</th><th>Durum</th><th>İşlem</th></tr>
+    ${rs.map(r => {
+      let usr = getU(r.username);
+      let pl = usr ? usr.plan : 'free';
+      return `<tr>
+        <td><strong style="color:${PCOL[pl]}">${PEM[pl]} ${esc(r.username)}</strong></td>
+        <td style="max-width:260px;white-space:pre-wrap;font-size:.82rem">${esc(r.description)}</td>
+        <td>${new Date(r.timestamp).toLocaleDateString('tr-TR')}</td>
+        <td>${r.status === 'pending' ? '<span style="color:#f59e0b;font-weight:600">⏳ Bekliyor</span>' : `<span style="color:#22c55e;font-weight:600">✅ Yapıldı</span>${r.adminMessage ? '<br><small style="color:var(--text2)">Not: ' + esc(r.adminMessage) + '</small>' : ''}`}</td>
+        <td>${r.status === 'pending' ? `<button class="btn bs sm" onclick="openCardResp(${r.id})">✅ Yapıldı & Yanıtla</button>` : '-'}</td>
+      </tr>`;
+    }).join('')}
+  </table></div>`;
+}
+
+function openCardResp(id) {
+  document.getElementById('crId').value = id;
+  document.getElementById('crMsg').value = 'Kartınız başarıyla hazırlandı ve teslim edilmek üzere kargoya verildi.';
+  openModal('cardRespModal');
+}
+
+async function respondCard() {
+  let id = parseInt(document.getElementById('crId').value);
+  let msg = document.getElementById('crMsg').value.trim();
+  let r = db.cardRequests.find(x => x.id === id);
+  if (!r) return;
+  r.status = 'done';
+  r.adminMessage = msg || 'Kartınız hazırlandı ve teslim edildi.';
+  closeModal('cardRespModal');
+  await pushCloudDB();
+  notify('💳 Kart isteği tamamlandı ve kullanıcıya teslimat mesajı kaydedildi!', 'ok');
+  updBadge();
+  rAdm();
+}
+
+// Kullanıcılar
+function rAUsr(c) {
+  c.innerHTML = `
+    <div style="overflow-x:auto"><table class="at">
+      <tr><th>Kullanıcı</th><th>Rol</th><th>Bakiye</th><th>IBAN</th><th>Kayıt Tarihi</th><th>İşlem</th></tr>
+      ${db.users.map(u => `<tr>
+        <td><strong>${esc(u.username)}</strong></td>
+        <td><span style="color:${PCOL[u.plan || 'free']};font-weight:700">${PNM[u.plan || 'free']} ${PEM[u.plan || 'free']}</span></td>
+        <td>${u.balance} VL</td>
+        <td style="font-size:.78rem;font-family:monospace">${u.iban || '-'}</td>
+        <td>${new Date(u.createdAt).toLocaleDateString('tr-TR')}</td>
+        <td>
+          <button class="btn bw sm" onclick="editU('${esc(u.username)}')" style="margin-right:6px">✏️ Düzenle</button>
+          <button class="btn bd sm" onclick="delU('${esc(u.username)}')">🗑️</button>
+        </td>
+      </tr>`).join('')}
+    </table></div>
+    <div style="margin-top:24px" class="tsec">
+      <div class="stitle">➕ Kullanıcıya Anında VL Yükle</div>
+      <div class="iline">
+        <div class="fg"><label>Kullanıcı Seçin</label><select id="aSU">${db.users.map(u => `<option value="${esc(u.username)}">${esc(u.username)}</option>`).join('')}</select></div>
+        <div class="fg"><label>Yüklenecek Miktar (VL)</label><input type="number" id="aSA" placeholder="VL Miktarı" min="1"></div>
+        <button class="btn bs sm" onclick="aSend()" style="height:46px">Hesaba Ekle</button>
+      </div>
+    </div>
+  `;
+}
+
+function editU(un) {
+  let u = getU(un);
+  if (!u) return;
+  document.getElementById('euTgt').value = un;
+  document.getElementById('euPlan').value = u.plan || 'free';
+  document.getElementById('euBal').value = u.balance;
+  openModal('editUModal');
+}
+
+async function saveUEdit() {
+  let un = document.getElementById('euTgt').value;
+  let pl = document.getElementById('euPlan').value;
+  let bal = parseInt(document.getElementById('euBal').value);
+  let u = getU(un);
+  if (!u) return;
+  u.plan = pl;
+  u.balance = bal;
+  if (me && me.username.toLowerCase() === un.toLowerCase()) {
+    me = u;
+    updSide();
+  }
+  closeModal('editUModal');
+  await pushCloudDB();
+  notify(un + ' kullanıcısı başarıyla güncellendi!', 'ok');
+  rAdm();
+}
+
+async function delU(un) {
+  if (me && un.toLowerCase() === me.username.toLowerCase()) return notify('Kendinizi silemezsiniz!', 'err');
+  if (!confirm(un + ' kullanıcısını silmek istediğinize emin misiniz?')) return;
+  db.users = db.users.filter(u => u.username.toLowerCase() !== un.toLowerCase());
+  await pushCloudDB();
+  notify(un + ' silindi.', 'inf');
+  rAdm();
+}
+
+async function aSend() {
+  let un = document.getElementById('aSU').value;
+  let amt = parseInt(document.getElementById('aSA').value);
+  if (!amt || amt <= 0) return notify('Lütfen geçerli bir VL miktarı girin!', 'err');
+  let u = getU(un);
+  if (!u) return;
+  u.balance += amt;
+  if (me && me.username.toLowerCase() === un.toLowerCase()) me = u;
+  db.transactions.push({ from: 'ADMIN', to: un, amount: amt, type: 'transfer', timestamp: Date.now() });
+  await pushCloudDB();
+  notify(amt + ' VL ' + un + ' hesabına eklendi!', 'ok');
+  document.getElementById('aSA').value = '';
+  rAdm();
+}
+
+// İlanlar (Admin)
+function rALst(c) {
+  let ls = db.listings.filter(l => !l.deleted).sort((a, b) => b.createdAt - a.createdAt);
+  if (!ls.length) {
+    c.innerHTML = '<div class="empty"><div class="ei">🏪</div><p>Yayında ilan bulunmuyor</p></div>';
+    return;
+  }
+  c.innerHTML = `<div style="overflow-x:auto"><table class="at">
+    <tr><th>Başlık</th><th>Satıcı</th><th>Fiyat</th><th>Defo Durumu</th><th>Sabit</th><th>İşlem</th></tr>
+    ${ls.map(l => `<tr>
+      <td><strong>${esc(l.title)}</strong></td>
+      <td>${esc(l.seller)}</td>
+      <td>${l.priceVL} VL (${l.priceTL || (l.priceVL/100)} TL)</td>
+      <td>${esc(l.defoText || l.defo)}</td>
+      <td>${l.pinned ? '📌 Sabit' : 'Normal'}</td>
+      <td>
+        <button class="btn ${l.pinned ? 'bo' : 'bw'} sm" onclick="togPin(${l.id})" style="margin-right:6px">${l.pinned ? 'Sabiti Kaldır' : '📌 Vitrine Sabitle'}</button>
+        <button class="btn bd sm" onclick="aDelL(${l.id})">🗑️ Sil</button>
+      </td>
+    </tr>`).join('')}
+  </table></div>`;
+}
+
+async function togPin(id) {
+  let l = db.listings.find(x => x.id === id);
+  if (l) {
+    l.pinned = !l.pinned;
+    await pushCloudDB();
+    notify(l.pinned ? 'İlan vitrine sabitlendi!' : 'Sabitleme kaldırıldı.', 'inf');
+    rAdm();
+  }
+}
+
+async function aDelL(id) {
+  let l = db.listings.find(x => x.id === id);
+  if (l) {
+    l.deleted = true;
+    await pushCloudDB();
+    notify('İlan pazardan kaldırıldı.', 'inf');
+    rAdm();
+  }
+}
+
+// Ayarlar & Bulut (Admin)
+function rASet(c) {
+  c.innerHTML = `
+    <div class="sc" style="max-width:620px">
+      <div class="stitle">🌐 Bulut & Senkronizasyon Ayarı</div>
+      <div class="fg">
+        <label>Bulut API Uç Noktası (CORS Destekli JSON URL veya Kendi Sunucunuz)</label>
+        <input id="cloudEndpointInput" value="${CLOUD_SYNC.endpoint}">
+        <small style="color:var(--text2)">Varsayılan olarak ücretsiz kvdb.io bulut depolaması kullanılır (Firebase GEREKTİRMEZ). İsterseniz kendi Node.js sunucunuzun linkini yazabilirsiniz.</small>
+      </div>
+      <button class="btn bp sm" onclick="saveCloudEndpoint()">🔗 Bulut Bağlantısını Güncelle</button>
+    </div>
+
+    <div class="sc" style="max-width:620px;margin-top:20px">
+      <div class="stitle">⚙️ Maaş & Ekonomi Ayarları</div>
+      <div class="fg">
+        <label>Genel Maaş Çarpanı (Varsayılan: 1)</label>
+        <input type="number" id="setMul" value="${db.settings.salaryMultiplier || 1}" min="0.1" step="0.1">
+        <small style="color:var(--text2)">Örn: 2 yazarsanız Free 20, Pro 200, Plus 400, Ultra 2000 VL alır.</small>
+      </div>
+      <button class="btn bp sm" onclick="saveSets()" style="margin-top:8px">💾 Ayarları Kaydet</button>
+    </div>
+
+    <div class="sc" style="max-width:620px;margin-top:20px">
+      <div class="stitle">📊 Sistem Özeti</div>
+      <div style="display:grid;gap:10px">
+        <div>👥 Toplam Kayıtlı Kullanıcı: <strong>${db.users.length}</strong></div>
+        <div>🛒 Aktif Pazar İlanları: <strong>${db.listings.filter(l => !l.deleted).length}</strong></div>
+        <div>📩 Bekleyen Plan İstekleri: <strong>${db.requests.filter(r => r.status === 'pending').length}</strong></div>
+        <div>💳 Bekleyen Özel Kart İstekleri: <strong>${db.cardRequests.filter(r => r.status === 'pending').length}</strong></div>
+        <div>💰 Toplam İşlem Hareketi: <strong>${db.transactions.length}</strong></div>
+      </div>
+    </div>
+
+    <div class="sc" style="max-width:620px;margin-top:20px;border-color:rgba(239,68,68,.3)">
+      <div class="stitle" style="color:var(--no)">⚠️ Sıfırlama Bölgesi</div>
+      <p style="font-size:.82rem;color:var(--text2);margin-bottom:10px">Tüm verileri silip ilk orijinal ayarlara döndürür.</p>
+      <button class="btn bd sm" onclick="resetAll()">🗑️ Tüm Verileri Fabrika Ayarına Sıfırla</button>
+    </div>
+  `;
+}
+
+function saveCloudEndpoint() {
+  let val = document.getElementById('cloudEndpointInput').value.trim();
+  if (val) {
+    CLOUD_SYNC.endpoint = val;
+    fetchCloudDB();
+    notify('Bulut bağlantı adresi güncellendi!', 'ok');
+  }
+}
+
+async function saveSets() {
+  db.settings.salaryMultiplier = parseFloat(document.getElementById('setMul').value) || 1;
+  await pushCloudDB();
+  notify('Ayarlar başarıyla kaydedildi!', 'ok');
+}
+
+async function resetAll() {
+  if (!confirm('TÜM VERİLER SİLİNECEK! Emin misiniz?')) return;
+  if (!confirm('Bu işlem geri alınamaz! Gerçekten sıfırlamak istiyor musunuz?')) return;
+  localStorage.removeItem('kapucino_db');
+  db = JSON.parse(JSON.stringify(DEFAULT_DB));
+  await pushCloudDB();
+  notify('Veriler orijinal haline sıfırlandı.', 'inf');
+  logout();
+}
+
+// ==================== ENTER KEY DESTEĞİ ====================
+document.getElementById('lPass').addEventListener('keypress', e => { if (e.key === 'Enter') login(); });
+document.getElementById('rPass2').addEventListener('keypress', e => { if (e.key === 'Enter') register(); });
+document.getElementById('admPw').addEventListener('keypress', e => { if (e.key === 'Enter') admLogin(); });
+document.getElementById('authPage').style.display = 'flex';
+</script>
+</body>
+</html>
